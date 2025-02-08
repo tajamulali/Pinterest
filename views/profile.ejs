@@ -23,7 +23,7 @@
                 <button @click="open = true" class="mt-5 px-7 py-2 bg-zinc-600 rounded-lg text-sm font-semibold">Add New Pin</button>
 
                 <!-- Popup Background (Hidden by Default) -->
-                <div x-show="open" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" x-cloak>
+                <div x-show="open" class="fixed inset-0 bg-opacity-50 flex items-center justify-center" style="background: rgba(0, 0, 0, 0.7)" x-cloak>
                     <div class="w-96 bg-zinc-800 p-6 rounded-lg shadow-lg text-white relative">
                         <!-- Close Button (Top Right) -->
                         <button @click="open = false" class="absolute top-3 right-3 text-gray-400 hover:text-white text-xl">&times;</button>
@@ -39,7 +39,7 @@
                         </form>
                     </div>
                 </div>
-    </div>
+            </div>
 
         </div>
         <div class="cards flex flex-wrap gap-10 px-10 mt-10">

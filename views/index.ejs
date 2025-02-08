@@ -10,11 +10,12 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.12.0/framer-motion.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 
 <body class="bg-gray-100">
     <!-- Navbar -->
-    <header class="w-full px-10 py-3 flex justify-between bg-zinc-100 items-center">
+    <header class="fixed z-50 w-full px-10 py-3 flex justify-between bg-zinc-100 items-center">
         <div class="flex items-center gap-4">
             <h3 class="text-red-700 font-bold text-lg">Pinterest</h3>
             <a href="/explore" class="text-zinc-700 font-semibold px-10">Explore</a>
@@ -24,16 +25,88 @@
             <a href="/about" class="text-zinc-700 font-semibold">About</a>
             <a href="/business" class="text-zinc-700 font-semibold">Business</a>
             <a href="/blog" class="text-zinc-700 font-semibold">Blog</a>
-            <a href="/login" class="text-white font-semibold bg-red-600 px-4 py-2 rounded-full">Login</a>
-            <a href="/register" class="text-zinc-800 font-semibold bg-zinc-400 px-4 py-2 rounded-full">Sign Up</a>
+            <!-- Wrapper with Alpine.js state -->
+            <div x-data="{ openLogin: false }">
+                <!-- Login Button -->
+                <button @click="openLogin = true" class="px-5 py-2 bg-red-600 text-white font-semibold rounded-full">
+                    Login
+                </button>
+
+                <!-- Dark Overlay -->
+                <div x-show="openLogin" class="fixed inset-0 bg-opacity-50 z-40" style="background: rgba(0, 0, 0, 0.7)" @click="openLogin = false"></div>
+
+                <!-- Login Modal -->
+                <div x-show="openLogin" x-transition x-cloak
+                    class="fixed top-1/2 right-0 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-xl p-6 z-50">
+
+                    <!-- Close Button -->
+                    <button @click="openLogin = false" class="absolute top-3 right-4 text-zinc-600 text-xl">&times;</button>
+
+                    <img src="https://i.pinimg.com/originals/d3/d1/75/d3d175e560ae133f1ed5cd4ec173751a.png" 
+                        alt="pin logo" class="w-16 mx-auto" />
+
+                    <h1 class="text-3xl text-center font-semibold text-zinc-700 mt-3">Welcome to Pinterest</h1>
+
+                    <div class="mt-6 px-20 py-7">
+                        <form action="/login" method="post">
+                            <label for="username" class="text-sm font-medium">Username</label>
+                            <input class="border-2 rounded-md block mb-2 w-full px-3 py-2" type="text" name="username" placeholder="Username">
+
+                            <label for="password" class="text-sm font-medium">Password</label>
+                            <input class="border-2 rounded-md block mb-2 w-full px-3 py-2" type="password" name="password" placeholder="Password">
+
+                            <a href="#" class="mt-2 text-sm font-semibold text-zinc-700 block text-center">Forgot your password?</a>
+
+                            <input class="border-2 rounded-full block mt-4 w-full px-3 py-2 bg-red-600 text-white font-semibold cursor-pointer" 
+                                  type="submit" value="Log In">
+
+                            <p class="text-xs font-semibold text-zinc-700 mt-4 text-center">
+                                By continuing, you agree to Pinterest's Terms of Service and acknowledge you've read our Privacy Policy.
+                            </p>
+                        </form>
+                        
+                        <a href="/register" class="block mt-4 text-sm font-semibold text-center text-zinc-700">
+                            Not on Pinterest yet? Sign up
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+          <!-- Signup Modal -->
+          <div x-data="{ openSignup: false }">
+            <button @click="openSignup = true" class="px-5 py-2 bg-zinc-500 text-white font-semibold rounded-full">Sign Up</button>
+              <div x-show="openSignup" x-cloak class="fixed inset-0 flex items-center justify-center z-50">
+                  <div class="absolute inset-0 bg-opacity-50" style="background: rgba(0, 0, 0, 0.7)" @click="openSignup = false"></div>
+                  <div x-show="openSignup" x-transition class="fixed top-1/2 right-0 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-xl p-6 z-50">
+                      <button @click="openSignup = false" class="absolute top-3 right-4 text-gray-600 text-xl">&times;</button>
+                      <img src="https://i.pinimg.com/originals/d3/d1/75/d3d175e560ae133f1ed5cd4ec173751a.png" class="w-16 mx-auto">
+                      <h1 class="text-3xl text-center font-semibold text-zinc-700 mt-3">Create An Account</h1>
+                      <h2 class="text-2xl text-center tracking-tighter text-zinc-700 mt-2">Find new ideas to try</h2>
+                      <div class="px-20 py-5">
+                          <form action="/register" method="post">
+                              <input class="border-2 rounded-md block mb-2 w-full px-3 py-2" type="text" name="fullname" placeholder="Full name">
+                              <input class="border-2 rounded-md block mb-2 w-full px-3 py-2" type="text" name="username" placeholder="Username">
+                              <input class="border-2 rounded-md block mb-2 w-full px-3 py-2" type="email" name="email" placeholder="Email">
+                              <input class="border-2 rounded-md block mb-2 w-full px-3 py-2" type="number" name="contact" placeholder="Contact">
+                              <input class="border-2 rounded-md block mb-2 w-full px-3 py-2" type="password" name="password" placeholder="Password">
+                              <input class="border-2 rounded-full block mt-2 w-full px-3 py-2 bg-red-600 text-white font-semibold cursor-pointer" type="submit" value="Create New Account">
+                          </form>
+                          <p class="text-xs font-semibold text-zinc-700 mt-5 text-center">
+                              By continuing, you agree to Pinterest's Terms of Service and acknowledge you've read our Privacy Policy.
+                          </p>
+                          <a @click="openSignup = false" class="block mt-4 text-sm font-semibold text-center text-zinc-700 cursor-pointer">Log In Existing Account</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
         </nav>
     </header>
 <section>
-    <div class="w-full max-w-6xl overflow-hidden">
+    <div class="w-full max-w-6xl overflow-hidden py-10">
       <div class="text-center text-3xl font-bold mb-10 mt-10">Get your next outfit idea</div>
       
       <div class="swiper mySwiper">
-          <div class="swiper-wrapper px-20 py-20 mt-5">
+          <div class="swiper-wrapper px-20 py-10 mt-5">
               <div class="swiper-slide transform transition-all duration-500 opacity-0 translate-y-10" id="slide1">
                   <img src="https://gallery1.charleskdesigns.com/image/028.jpg" class="rounded-lg shadow-lg w-full" />
               </div>
@@ -279,7 +352,7 @@
 
 
 
-    
+
     <script>
       const swiper = new Swiper(".mySwiper", {
           slidesPerView: 3,
