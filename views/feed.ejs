@@ -1,0 +1,20 @@
+<% include ./partials/header.ejs %>
+
+<div class="w-full min-h-screen bg-zinc-800 px-10 text-white py-20">
+    <div class="cards grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <% posts.forEach(function(elem, index){ %>
+            <% 
+                let cardSize = index % 3 === 0 ? 'h-72' : index % 3 === 1 ? 'h-96' : 'h-60';
+            %>
+            <div class="card w-full <%= cardSize %>">
+                <div class="w-full h-full bg-zinc-700 rounded-lg overflow-hidden">
+                    <img class="w-full h-full object-cover" src="/images/uploads/<%= elem.image %>" alt="">
+                </div>
+                <h5 class="mt-2 text-sm"><%= elem.title %></h5>
+                <h6 class="text-xs opacity-60">@<%= elem.user.username %></h6>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+<% include ./partials/footer.ejs %>

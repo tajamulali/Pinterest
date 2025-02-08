@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pinterest</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+ 
+</head>
+<body>
+  <% if(nav === true){ %>
+    <div class="fixed w-full text-white px-10 py-3 flex justify-between bg-zinc-800 items-center">
+      <h3 class="text-red-700 font-bold">Pinterest</h3>
+      <div class="flex gap-10 items-center">
+        <a href="/profile">Profile</a>
+        <a href="/feed">Feed</a>
+        <a class="px-3 py-2 bg-red-700 text-white rounded-full" href="/logout">Logout</a>
+      </div>
+    </div>
+  <% } %>
