@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const expressSession = require('express-session');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -12,20 +13,23 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 require('dotenv').config(); 
 
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  tls: true,  // Ensure TLS is enabled
-});
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 
 var app = express();
 
-app.use(expressSession({
+app.use(session({
+  secret: 'pinterest',
   resave: false,
-  saveUninitialized: false,
-  secret: "pinsecret",
-}))
+  saveUninitialized: true,
+  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+  cookie: { secure: false }
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
