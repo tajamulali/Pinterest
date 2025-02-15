@@ -16,7 +16,6 @@ require('dotenv').config();
 
 mongoose.connect(process.env.MONGO_URI);
 
-
 var app = express();
 const PORT = process.env.PORT || 3000;  // Use Render's PORT or default to 3000
 
