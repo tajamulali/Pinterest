@@ -13,9 +13,20 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 require('dotenv').config(); 
 
-mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.error("MongoDB connection error:", err));
+const mongoURI = process.env.MONGODB_URI; // Check if it is undefined
+if (!mongoURI) {
+  console.error("❌ MongoDB URI is undefined! Check your environment variables.");
+  process.exit(1); // Stop the server
+}
+
+mongoose
+  .connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
+
 
 var app = express();
 const PORT = process.env.PORT || 3000;  // Use Render's PORT or default to 3000
