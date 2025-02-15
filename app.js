@@ -18,7 +18,6 @@ mongoose.connect(process.env.MONGO_URI);
 
 
 var app = express();
-const express = require("express");
 const app = express();
 
 const PORT = process.env.PORT || 3000;  // Use Render's PORT or default to 3000
