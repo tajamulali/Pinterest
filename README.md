@@ -1,6 +1,9 @@
 # Pinterest Clone 🖼️ | Node.js + Express.js + MongoDB
 
-![Pinterest Clone Banner](https://i.pinimg.com/originals/d3/d1/75/d3d175e560ae133f1ed5cd4ec173751a.png)
+<p align="center">
+  <img src="https://i.pinimg.com/originals/d3/d1/75/d3d175e560ae133f1ed5cd4ec173751a.png" alt="Pinterest Logo" width="150">
+</p>
+
 
 A **full-featured Pinterest-inspired web application** that enables users to **discover, upload, and share images** seamlessly. Built using **Node.js, Express.js, and MongoDB**, this project replicates the core functionalities of Pinterest, including **user authentication, dynamic user feeds, and profile management**.
 
