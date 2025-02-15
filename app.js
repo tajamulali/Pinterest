@@ -14,7 +14,13 @@ const mongoose = require('mongoose');
 require('dotenv').config(); 
 
 
-mongoose.connect(process.env.MONGO_URI);
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  tls: true,  // Ensure TLS is enabled
+})
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.error("MongoDB connection error:", err));
 
 var app = express();
 const PORT = process.env.PORT || 3000;  // Use Render's PORT or default to 3000
