@@ -31,7 +31,7 @@ mongoose
 // **Session Setup (Using MongoDB Store)**
 app.use(
   session({
-    secret: "your_secret_key",
+    secret: "pinsecret",
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
