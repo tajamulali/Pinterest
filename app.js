@@ -18,15 +18,11 @@ const indexRouter = require("./routes/index");
 const userModel = require("./routes/users"); // ✅ Make sure this points to the correct User Model file
 
 // Connect to MongoDB
-const mongoURI = process.env.MONGODB_URI || "mongodb+srv://nuwaib:appiii@pinterestclone.mongodb.net/pin?retryWrites=true&w=majority";
+const mongoURI = process.env.MONGODB_URI;
 
-mongoose
-  .connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+mongoose.connect(mongoURI)
   .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.log("❌ MongoDB Connection Error:", err));
+  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
 // **Session Setup (Using MongoDB Store)**
 app.use(
