@@ -15,7 +15,7 @@ require("dotenv").config();
 
 // Load Routes
 const indexRouter = require("./routes/index");
-const userModel = require("./models/user"); // ✅ Make sure this points to the correct User Model file
+const userModel = require("./routes/users"); // ✅ Make sure this points to the correct User Model file
 
 // Connect to MongoDB
 const mongoURI = process.env.MONGODB_URI || "mongodb+srv://nuwaib:appiii@pinterestclone.mongodb.net/pin?retryWrites=true&w=majority";
