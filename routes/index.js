@@ -5,8 +5,10 @@ const passport = require('passport');
 const upload = require('./multer'); // Correct path for multer
 const postModel = require('./post');
 
-const LocalStrategy = require('passport-local').Strategy;
-passport.use(new LocalStrategy(userModel.authenticate())); // Ensure passport-local-mongoose is applied
+const LocalStrategy = require("passport-local").Strategy;
+
+// Ensure the model supports authentication
+passport.use(new LocalStrategy(userModel.authenticate()));
 
 passport.serializeUser(userModel.serializeUser());
 passport.deserializeUser(userModel.deserializeUser());
