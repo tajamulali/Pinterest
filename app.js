@@ -29,7 +29,7 @@ app.listen(PORT, () => {
 
 
 app.use(session({
-  secret: 'pinterest',
+  secret: 'pinsecret',
   resave: false,
   saveUninitialized: true,
 }));
