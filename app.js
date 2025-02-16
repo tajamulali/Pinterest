@@ -13,20 +13,12 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 require('dotenv').config(); 
 
-const mongoURI = process.env.MONGODB_URI; // Check if it is undefined
-if (!mongoURI) {
-  console.error("❌ MongoDB URI is undefined! Check your environment variables.");
-  process.exit(1); // Stop the server
-}
-
-mongoose
-  .connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
-
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 var app = express();
 const PORT = process.env.PORT || 3000;  // Use Render's PORT or default to 3000
@@ -40,8 +32,6 @@ app.use(session({
   secret: 'pinterest',
   resave: false,
   saveUninitialized: true,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-  cookie: { secure: false }
 }));
 
 app.use(passport.initialize());
