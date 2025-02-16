@@ -9,7 +9,7 @@ const LocalStrategy = require("passport-local").Strategy;
 require("dotenv").config();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI || "mongodb+srv://nuwaib:appiii@pinterestclone.mongodb.net/pin?retryWrites=true&w=majority", {
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => console.log("MongoDB Connected"))
