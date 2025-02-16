@@ -1,29 +1,33 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const passport = require("passport"); // Make sure it's imported
-const session = require("express-session"); // Required for passport session handling
-const userModel = require("./routes/users"); // Ensure it's correctly imported
+const session = require("express-session");
+const MongoStore = require("connect-mongo"); // ✅ Import MongoStore
+const passport = require("passport");
+const userModel = require("./routes/users");
 const LocalStrategy = require("passport-local").Strategy;
 
 require("dotenv").config();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
+const mongoURI = process.env.MONGODB_URI || "mongodb+srv://nuwaib:appiii@pinterestclone.mongodb.net/pin?retryWrites=true&w=majority";
+
+mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => console.log("MongoDB Connected"))
 .catch(err => console.log("MongoDB Error:", err));
 
-// Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-// **Session Setup (Required for Passport)**
+// **Session Setup (Now Using MongoDB Store)**
 app.use(session({
     secret: "your_secret_key",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: mongoURI,
+        collectionName: "sessions",
+        ttl: 14 * 24 * 60 * 60 // Session expires in 14 days
+    })
 }));
 
 // **Passport Setup**
@@ -42,23 +46,6 @@ app.use("/", indexRouter);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-
-// Session Configuration with MongoDB Store
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'pinsecret',
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI,
-    collectionName: 'sessions',
-    ttl: 14 * 24 * 60 * 60, // Session expires in 14 days
-  }),
-  cookie: {
-    secure: process.env.NODE_ENV === 'production', // Secure cookies in production
-    httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24 * 14, // 14 days
-  }
-}));
 
 // Initialize Passport
 app.use(passport.initialize());
