@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
-const userModel = require('./users'); // Ensure correct import
+const userModel = require('./users'); // Correct path for models
 const passport = require('passport');
-const upload = require('./multer'); // Ensure correct path
+const upload = require('./multer'); // Correct path for multer
 const postModel = require('./post');
 
 const LocalStrategy = require('passport-local').Strategy;
-passport.use(new LocalStrategy(userModel.authenticate())); // Corrected usage
+passport.use(new LocalStrategy(userModel.authenticate())); // Ensure passport-local-mongoose is applied
 
 passport.serializeUser(userModel.serializeUser());
 passport.deserializeUser(userModel.deserializeUser());
