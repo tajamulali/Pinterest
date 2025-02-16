@@ -1,44 +1,47 @@
-var createError = require('http-errors'); 
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-require('dotenv').config();
+const express = require("express");
+const app = express();
+const mongoose = require("mongoose");
+const passport = require("passport"); // Make sure it's imported
+const session = require("express-session"); // Required for passport session handling
+const userModel = require("./routes/users"); // Ensure it's correctly imported
+const LocalStrategy = require("passport-local").Strategy;
 
-var indexRouter = require('./routes/index');
-const { User, passport } = require('./routes/users'); // Import the correct User model & Passport
+require("dotenv").config();
 
-const mongoose = require('mongoose');
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI || "mongodb+srv://nuwaib:appiii@pinterestclone.mongodb.net/pin?retryWrites=true&w=majority", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => console.log("MongoDB Connected"))
+.catch(err => console.log("MongoDB Error:", err));
 
-// Debugging MongoDB URI
-console.log("MongoDB URI:", process.env.MONGODB_URI);
+// Middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-if (!process.env.MONGODB_URI) {
-  console.error("❌ MONGODB_URI is not defined! Make sure you set it in your environment variables.");
-  process.exit(1);
-}
+// **Session Setup (Required for Passport)**
+app.use(session({
+    secret: "your_secret_key",
+    resave: false,
+    saveUninitialized: false
+}));
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  tls: true,
-  tlsAllowInvalidCertificates: false,
-})
-.then(() => console.log("✅ MongoDB connected successfully!"))
-.catch(err => {
-  console.error("❌ MongoDB connection error:", err);
-  process.exit(1);
-});
+// **Passport Setup**
+app.use(passport.initialize());
+app.use(passport.session());
 
-var app = express();
+passport.use(new LocalStrategy(userModel.authenticate()));
+
+passport.serializeUser(userModel.serializeUser());
+passport.deserializeUser(userModel.deserializeUser());
+
+// Routes
+const indexRouter = require("./routes/index");
+app.use("/", indexRouter);
+
 const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
-});
 
 // Session Configuration with MongoDB Store
 app.use(session({
