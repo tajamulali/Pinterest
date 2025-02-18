@@ -27,7 +27,7 @@ mongoose.connect(mongoURI)
 // **Session Setup (Using MongoDB Store)**
 app.use(
   session({
-    secret: "pinsecret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
