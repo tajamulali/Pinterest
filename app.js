@@ -9,6 +9,7 @@ const createError = require("http-errors");
 const path = require("path");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
+const http = require("http");
 
 // Load environment variables
 require("dotenv").config();
@@ -82,8 +83,45 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
+// **Normalize Port Function**
+function normalizePort(val) {
+  const port = parseInt(val, 10);
+  if (isNaN(port)) return val; // Named pipe
+  if (port >= 0) return port;  // Port number
+  return false;
+}
+
 // **Start Server**
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+const PORT = normalizePort(process.env.PORT || 3000);
+app.set("port", PORT);
+
+const server = http.createServer(app);
+
+// Handle server errors
+server.on("error", (error) => {
+  if (error.syscall !== "listen") throw error;
+
+  const bind = typeof PORT === "string" ? "Pipe " + PORT : "Port " + PORT;
+  switch (error.code) {
+    case "EACCES":
+      console.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(`${bind} is already in use`);
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+});
+
+// Server listening event
+server.on("listening", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
+// Start listening
+server.listen(PORT);
 
 module.exports = app;
